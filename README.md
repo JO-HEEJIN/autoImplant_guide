@@ -1,26 +1,28 @@
-# E=mc² Biotech - AutoImplant Guide
+# E=mc2 Biotech - AutoImplant Guide
 
-자동화된 임플란트 가이드 설계 시스템
+Automated Implant Guide Design System
 
-## 🌐 Live Demo
+## Live Demo
 
-- **랜딩 페이지**: [https://implant-web.vercel.app](https://implant-web.vercel.app)
-- **3D 데모**: [https://implant-web.vercel.app/main](https://implant-web.vercel.app/main)
+- **Landing Page**: [https://implant-web.vercel.app](https://implant-web.vercel.app)
+- **3D Demo**: [https://implant-web.vercel.app/main](https://implant-web.vercel.app/main)
 
-## 📖 프로젝트 소개
+## Introduction
 
-E=mc² Biotech의 자동화된 임플란트 가이드 설계 로직을 시연하는 웹 플랫폼입니다.
+This is a web platform demonstrating the automated implant guide design logic of E=mc2 Biotech.
 
-### 주요 기능
+**Note: This MVP currently operates using mock data for demonstration purposes.**
 
-- **비즈니스 프레젠테이션**: 회사 소개 및 투자 유치 자료
-- **3D 시뮬레이션**: 치아 및 임플란트 위치 시각화
-- **실시간 알고리즘**: 0.5mm lingual offset 규칙 적용
-- **인터랙티브 UI**: 치아 선택 및 스펙 표시
+### Key Features
 
-## 🚀 Getting Started
+- **Business Presentation**: Company introduction and investment pitch
+- **3D Simulation**: Visualization of teeth and implant positioning
+- **Real-time Algorithm**: Application of the 0.5mm lingual offset rule
+- **Interactive UI**: Tooth selection and specification display
 
-### 개발 서버 실행
+## Getting Started
+
+### Run Development Server
 
 ```bash
 npm run dev
@@ -32,28 +34,28 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### 프로젝트 구조
+### Project Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx              # 랜딩 페이지
+│   ├── page.tsx              # Landing Page
 │   ├── main/
-│   │   └── page.tsx          # 3D 데모 페이지
+│   │   └── page.tsx          # 3D Demo Page
 │   ├── layout.tsx
 │   └── globals.css
-├── components/               # React 컴포넌트
-│   ├── Scene.tsx            # 3D 씬
-│   ├── ToothModel.tsx       # 치아 모델
-│   ├── ImplantModel.tsx     # 임플란트 모델
+├── components/               # React Components
+│   ├── Scene.tsx            # 3D Scene
+│   ├── ToothModel.tsx       # Tooth Model
+│   ├── ImplantModel.tsx     # Implant Model
 │   └── ...
 └── lib/
-    ├── types.ts             # TypeScript 타입 정의
-    ├── constants.ts         # 상수
-    └── implant-logic.ts     # 임플란트 로직
+    ├── types.ts             # TypeScript Types
+    ├── constants.ts         # Constants
+    └── implant-logic.ts     # Implant Logic
 ```
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 16 (React 19)
 - **3D Graphics**: Three.js, React Three Fiber
@@ -61,20 +63,20 @@ src/
 - **Language**: TypeScript
 - **Deployment**: Vercel
 
-## 📦 Build
+## Build
 
 ```bash
 npm run build
 npm start
 ```
 
-## 📝 Learn More
+## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [React Three Fiber](https://docs.pmnd.rs/react-three-fiber)
 - [Three.js Documentation](https://threejs.org/docs/)
 
-## 🚢 Deploy on Vercel
+## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
 
@@ -82,4 +84,4 @@ Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ---
 
-© 2025 E=mc² Biotech. All rights reserved.
+(c) 2025 E=mc2 Biotech. All rights reserved.
