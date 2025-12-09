@@ -1,208 +1,197 @@
 'use client';
 
 /**
- * Main Application Page
- * AutoImplant Guide Web Visualizer
- * 
- * This page integrates all components:
- * - 3D Scene for visualization
- * - Tooth Selector for choosing implant site
- * - Step Indicator for algorithm visualization
- * - Specs Panel for displaying calculated values
+ * Landing Page
+ * E=mc² Biotech Business Presentation
  */
 
-import { useState, useCallback, useMemo } from 'react';
-import dynamic from 'next/dynamic';
-import { ToothSelector } from '@/components/ToothSelector';
-import { StepIndicator } from '@/components/StepIndicator';
-import { SpecsPanel } from '@/components/SpecsPanel';
-import { ToothNumber, BoundingBox, ImplantSpec, Vector3 } from '@/lib/types';
-import { ImplantLogic } from '@/lib/implant-logic';
-import { getSampleCalculationData, getNerveData } from '@/lib/mock-data';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
 
-// Dynamic import for Scene to avoid SSR issues with Three.js
-const Scene = dynamic(() => import('@/components/Scene').then(mod => ({ default: mod.Scene })), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full min-h-[500px] bg-slate-800 rounded-xl flex items-center justify-center">
-      <div className="text-slate-400">Loading 3D Scene...</div>
-    </div>
-  ),
-});
+const slides = [
+    {
+        id: 1,
+        title: '우리가 해낼 수 있는 이유',
+        subtitle: 'WHY US',
+        image: '/landing-1-why-us.png',
+        alt: 'Global Clinical Expert, Full-Spectrum Experience, Market Insight',
+    },
+    {
+        id: 2,
+        title: '재무 계획 및 투자 요청',
+        subtitle: 'FINANCIAL PLAN & INVESTMENT',
+        image: '/landing-2-financial.png',
+        alt: 'Financial Projection and Investment Round',
+    },
+    {
+        id: 3,
+        title: '단계별 실행 전략',
+        subtitle: 'EXECUTION STRATEGY (Roadmap)',
+        image: '/landing-3-roadmap.png',
+        alt: 'Execution Roadmap - 4 Stages',
+    },
+    {
+        id: 4,
+        title: '경쟁 우위 비교',
+        subtitle: 'COMPETITIVE ADVANTAGE',
+        image: '/landing-4-competitive.png',
+        alt: 'Competitive Advantage Comparison',
+    },
+    {
+        id: 5,
+        title: '다각화된 수익 구조',
+        subtitle: 'BUSINESS MODEL',
+        image: '/landing-5-business.png',
+        alt: 'Diversified Revenue Structure',
+    },
+];
 
-export default function Home() {
-  // State for selected tooth
-  const [selectedTooth, setSelectedTooth] = useState<ToothNumber | null>(null);
+export default function LandingPage() {
+    const [currentSlide, setCurrentSlide] = useState(0);
 
-  // State for algorithm step visualization
-  const [currentStep, setCurrentStep] = useState<number>(1);
+    const nextSlide = () => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+    };
 
-  // Calculate implant data when tooth is selected
-  const calculationData = useMemo(() => {
-    if (!selectedTooth) return null;
+    const prevSlide = () => {
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    };
 
-    try {
-      const sampleData = getSampleCalculationData(selectedTooth);
-      const nerveData = getNerveData(selectedTooth);
+    const goToSlide = (index: number) => {
+        setCurrentSlide(index);
+    };
 
-      // Calculate bounding box and implant spec
-      const result = ImplantLogic.calculateFromRawInput(
-        sampleData.boneData.crestLevel,
-        sampleData.boneData.nerveLevel,
-        sampleData.mesialX,
-        sampleData.distalX,
-        sampleData.boneData.buccalZ,
-        sampleData.boneData.lingualZ,
-        sampleData.boneData.slope
-      );
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex flex-col">
+            {/* Header */}
+            <header className="w-full py-6 px-8 flex justify-between items-center bg-black/30 backdrop-blur-sm border-b border-white/10">
+                <div className="flex items-center gap-3">
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-white/20">
+                        <Image src="/logo.jpg" alt="E=mc2 Biotech Logo" fill className="object-cover" />
+                    </div>
+                    <div>
+                        <h1 className="text-white font-bold text-xl">E=mc² Biotech</h1>
+                        <p className="text-blue-300 text-xs">Automated Implant Guide Design</p>
+                    </div>
+                </div>
+                <Link
+                    href="/main"
+                    className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/50"
+                >
+                    데모 보기
+                </Link>
+            </header>
 
-      return {
-        boundingBox: result.boundingBox,
-        implantSpec: result.implantSpec,
-        nervePoints: nerveData?.points || null,
-        safetyPlaneY: nerveData?.safetyPlaneY || null,
-        toothPosition: sampleData.tooth.position,
-      };
-    } catch (error) {
-      console.error('Error calculating implant data:', error);
-      return null;
-    }
-  }, [selectedTooth]);
+            {/* Main Content */}
+            <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+                {/* Slide Container */}
+                <div className="w-full max-w-6xl mx-auto">
+                    {/* Title */}
+                    <div className="text-center mb-8">
+                        <p className="text-blue-400 text-sm font-semibold mb-2 tracking-wider uppercase">
+                            {slides[currentSlide].subtitle}
+                        </p>
+                        <h2 className="text-white text-3xl md:text-4xl font-bold">
+                            {slides[currentSlide].title}
+                        </h2>
+                    </div>
 
-  // Handle tooth selection
-  const handleSelectTooth = useCallback((tooth: ToothNumber) => {
-    setSelectedTooth(tooth);
-    setCurrentStep(2); // Auto-advance to step 2 when tooth is selected
-  }, []);
+                    {/* Image Viewer */}
+                    <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl p-4 md:p-8 shadow-2xl border border-white/10">
+                        {/* Navigation Buttons */}
+                        <button
+                            onClick={prevSlide}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                            aria-label="Previous slide"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
 
-  // Handle step change
-  const handleStepChange = useCallback((step: number) => {
-    if (selectedTooth) {
-      setCurrentStep(step);
-    }
-  }, [selectedTooth]);
+                        <button
+                            onClick={nextSlide}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                            aria-label="Next slide"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
 
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-screen-2xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                AutoImplant Guide
-              </h1>
-              <p className="text-sm text-slate-400 mt-1">
-                Geometric Algorithm-Based Implant Positioning System
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-xs text-slate-500">Version</div>
-                <div className="text-sm text-slate-300 font-mono">MVP 1.0</div>
-              </div>
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">AI</span>
-              </div>
-            </div>
-          </div>
+                        {/* Slide Image */}
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+                            <Image
+                                src={slides[currentSlide].image}
+                                alt={slides[currentSlide].alt}
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+
+                        {/* Slide Indicator */}
+                        <div className="flex justify-center gap-2 mt-6">
+                            {slides.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => goToSlide(index)}
+                                    className={`w-3 h-3 rounded-full transition-all ${index === currentSlide
+                                        ? 'bg-blue-500 w-8'
+                                        : 'bg-white/30 hover:bg-white/50'
+                                        }`}
+                                    aria-label={`Go to slide ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* CTA Section */}
+                    <div className="text-center mt-12">
+                        <p className="text-gray-300 mb-6 text-lg">
+                            임플란트 가이드 자동 설계 시스템을 체험해보세요
+                        </p>
+                        <Link
+                            href="/main"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-blue-500/50 hover:scale-105"
+                        >
+                            <span>3D 데모 체험하기</span>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </Link>
+                    </div>
+                </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="w-full py-8 px-8 bg-black/30 backdrop-blur-sm border-t border-white/10">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        {/* Company Info */}
+                        <div className="text-left">
+                            <h3 className="text-white font-bold text-lg mb-3">E=mc² Biotech</h3>
+                            <p className="text-gray-400 text-sm mb-2">Automated Implant Guide Design</p>
+                        </div>
+
+                        {/* Contact Info */}
+                        <div className="text-left md:text-right">
+                            <div className="text-gray-400 text-sm space-y-1">
+                                <p><span className="text-gray-500">CEO:</span> Eun Park</p>
+                                <p><span className="text-gray-500">Email:</span> <a href="mailto:ekpark@emc2-biotech.com" className="hover:text-blue-400 transition-colors">ekpark@emc2-biotech.com</a></p>
+                                <p><span className="text-gray-500">Phone:</span> <a href="tel:+16504000800" className="hover:text-blue-400 transition-colors">+1 650-400-0800</a></p>
+                                <p><span className="text-gray-500">Address:</span> 1055 Stewart Dr, #113, Sunnyvale, CA 94085</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Copyright */}
+                    <div className="border-t border-white/10 pt-4 text-center">
+                        <p className="text-gray-400 text-sm">© 2025 E=mc² Biotech. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="max-w-screen-2xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <ToothSelector
-              selectedTooth={selectedTooth}
-              onSelectTooth={handleSelectTooth}
-            />
-            <StepIndicator
-              currentStep={currentStep}
-              onStepChange={handleStepChange}
-            />
-          </div>
-
-          {/* Main 3D Viewer */}
-          <div className="lg:col-span-2">
-            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">3D Visualization</h2>
-                <div className="flex items-center gap-2 text-xs text-slate-400">
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                  <span>Live Preview</span>
-                </div>
-              </div>
-              <Scene
-                boundingBox={calculationData?.boundingBox || null}
-                implantSpec={calculationData?.implantSpec || null}
-                nervePoints={calculationData?.nervePoints || null}
-                safetyPlaneY={calculationData?.safetyPlaneY || null}
-                currentStep={currentStep}
-                toothPosition={calculationData?.toothPosition || null}
-              />
-              <div className="mt-4 text-xs text-slate-500 text-center">
-                Drag to rotate | Scroll to zoom | Right-click to pan
-              </div>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <SpecsPanel
-              implantSpec={calculationData?.implantSpec || null}
-              boundingBox={calculationData?.boundingBox || null}
-            />
-
-            {/* Golden Rule Reminder */}
-            <div className="bg-gradient-to-r from-yellow-600/20 to-orange-600/20 border border-yellow-500/50 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-yellow-400 mb-2">Golden Rule</h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                The implant is positioned <span className="text-yellow-400 font-bold">0.5mm toward the lingual side</span> from the center of the bounding box. This protects the buccal bone and achieves a 99% success rate.
-              </p>
-            </div>
-
-            {/* Legend */}
-            <div className="bg-slate-800 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-white mb-3">Visualization Legend</h3>
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-[#e8d5b7] rounded"></div>
-                  <span className="text-slate-300">Bone Structure</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-[#ff3333] rounded"></div>
-                  <span className="text-slate-300">Nerve Canal</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-[#ffcc00] rounded opacity-50"></div>
-                  <span className="text-slate-300">Safety Plane</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-[#00ff00] rounded"></div>
-                  <span className="text-slate-300">Bounding Box</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-[#4a90d9] rounded"></div>
-                  <span className="text-slate-300">Implant</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-[#ff00ff] rounded"></div>
-                  <span className="text-slate-300">Offset Indicator</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-700 mt-8 py-4">
-        <div className="max-w-screen-2xl mx-auto px-6 text-center text-xs text-slate-500">
-          AutoImplant Guide Web Visualizer - For educational and demonstration purposes only
-        </div>
-      </footer>
-    </main>
-  );
+    );
 }

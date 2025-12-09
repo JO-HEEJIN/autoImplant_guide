@@ -5,8 +5,8 @@
  * Renders the calculated implant as a cylinder at the golden position
  */
 
-import { useRef } from 'react';
-import { Mesh } from 'three';
+import { useRef, useMemo } from 'react';
+import { Mesh, Vector3, BufferGeometry, LineBasicMaterial, Line as ThreeLine } from 'three';
 import { ImplantSpec } from '@/lib/types';
 import { COLORS, LINGUAL_OFFSET } from '@/lib/constants';
 
@@ -23,6 +23,18 @@ export function ImplantModel({ spec, showOffset = true }: ImplantModelProps) {
     // and extends downward (into the bone)
     const implantY = position.y - length / 2;
 
+    // Create line geometry for offset indicator
+    const offsetLine = useMemo(() => {
+        const geometry = new BufferGeometry();
+        const points = [
+            new Vector3(position.x, position.y, position.z + LINGUAL_OFFSET),
+            new Vector3(position.x, position.y, position.z),
+        ];
+        geometry.setFromPoints(points);
+        const material = new LineBasicMaterial({ color: COLORS.offset });
+        return new ThreeLine(geometry, material);
+    }, [position.x, position.y, position.z]);
+
     return (
         <group>
             {/* Original center point (before offset) - for reference */}
@@ -35,20 +47,7 @@ export function ImplantModel({ spec, showOffset = true }: ImplantModelProps) {
 
             {/* Offset indicator line */}
             {showOffset && (
-                <line>
-                    <bufferGeometry>
-                        <bufferAttribute
-                            attach="attributes-position"
-                            count={2}
-                            array={new Float32Array([
-                                position.x, position.y, position.z + LINGUAL_OFFSET,
-                                position.x, position.y, position.z,
-                            ])}
-                            itemSize={3}
-                        />
-                    </bufferGeometry>
-                    <lineBasicMaterial color={COLORS.offset} linewidth={2} />
-                </line>
+                <primitive object={offsetLine} />
             )}
 
             {/* Implant body (cylinder) */}
