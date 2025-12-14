@@ -107,7 +107,7 @@ export default function LandingPage() {
                     href="/main"
                     className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/50"
                 >
-                    데모 보기
+                    View Demo
                 </Link>
             </header>
 
@@ -178,13 +178,13 @@ export default function LandingPage() {
                     {/* CTA Section */}
                     <div className="text-center mt-12">
                         <p className="text-gray-300 mb-6 text-lg">
-                            임플란트 가이드 자동 설계 시스템을 체험해보세요
+                            Experience the Automated Implant Guide Design System
                         </p>
                         <Link
                             href="/main"
                             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-blue-500/50 hover:scale-105"
                         >
-                            <span>3D 데모 체험하기</span>
+                            <span>Try 3D Demo</span>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
