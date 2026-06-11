@@ -11,6 +11,7 @@
  * - Specs Panel for displaying calculated values
  */
 
+import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -89,13 +90,24 @@ export default function Home() {
       <header className="border-b border-slate-700 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-screen-2xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                AutoImplant Guide
-              </h1>
-              <p className="text-sm text-slate-400 mt-1">
-                Geometric Algorithm-Based Implant Positioning System
-              </p>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white transition-all border border-slate-700"
+                aria-label="Back to Home"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </Link>
+              <div>
+                <h1 className="text-2xl font-bold text-white">
+                  AutoImplant Guide
+                </h1>
+                <p className="text-sm text-slate-400 mt-1">
+                  Geometric Algorithm-Based Implant Positioning System
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
