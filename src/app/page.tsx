@@ -35,7 +35,7 @@ const slides = [
         id: 4,
         title: 'E=mc² Biotech',
         subtitle: 'PAGE 04',
-        image: '/slides/04.jpeg',
+        image: '/slides/04_myq.jpeg',
         alt: 'Business Presentation Slide 4',
     },
     {
