@@ -13,9 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AutoImplant Guide - Automated Implant Positioning",
-  description: "Web-based platform for geometric algorithm-based implant guide design. Visualize and simulate automated implant positioning with the 0.5mm lingual offset golden rule.",
-  keywords: ["implant", "dental", "guide", "automation", "3D visualization"],
+  metadataBase: new URL("https://emc2-biotech.com"),
+  title: "E=mc² Biotech | AutoImplant Guide - Automated Implant Positioning",
+  description: "E=mc² Biotech's web platform for geometric algorithm-based implant guide design. Visualize and simulate automated implant positioning with the 0.5mm lingual offset golden rule.",
+  keywords: ["E=mc2 Biotech", "AutoImplant Guide", "implant", "dental", "guide", "automation", "3D visualization"],
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
